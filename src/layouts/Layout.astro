@@ -1,0 +1,179 @@
+---
+import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { siteName, siteTagline, twitterUrl } from '../lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = siteTagline } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const onHome = pathname === '/';
+const onAgents = pathname === '/agents' || pathname.startsWith('/agents/');
+const onSubmit = pathname === '/submit';
+const onAbout = pathname === '/about';
+const onScoring = pathname === '/scoring';
+const onContact = pathname === '/contact';
+
+const primaryNav = [
+  { href: '/', label: 'Home', current: onHome },
+  { href: '/agents', label: 'All Agents', current: onAgents },
+  { href: '/submit', label: 'Submit Agent', current: onSubmit },
+] as const;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <script is:inline>
+      (function () {
+        try {
+          var mode = localStorage.getItem('agenthub-theme') || 'system';
+          var dark =
+            mode === 'dark' ||
+            (mode !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+          document.documentElement.dataset.theme = mode;
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-screen flex-col bg-paper font-sans text-ink antialiased dark:bg-night dark:text-cream">
+    <header class="border-b border-line/90 dark:border-night-line">
+      <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
+        <a href="/" class="group flex min-w-0 items-center gap-2.5">
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-ink text-[0.7rem] font-semibold tracking-wide text-paper dark:bg-cream dark:text-ink"
+            aria-hidden="true"
+          >
+            AF
+          </span>
+          <span class="font-serif text-xl font-semibold tracking-tight">{siteName}</span>
+        </a>
+
+        <div class="flex items-center gap-2 sm:gap-4">
+          <nav class="hidden items-center gap-5 md:flex" aria-label="Primary">
+            {primaryNav.map((item) => (
+              <a
+                href={item.href}
+                aria-current={item.current ? 'page' : undefined}
+                class:list={['nav-link', item.current && 'nav-link-active']}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          <ThemeToggle />
+          <details class="nav-disclosure relative md:hidden">
+            <summary class="nav-disclosure-toggle" aria-label="Open menu">
+              <span class="sr-only">Menu</span>
+              <svg class="size-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </summary>
+            <nav
+              class="nav-disclosure-panel absolute right-0 z-20 mt-2 min-w-44 rounded-xl border border-line bg-paper p-2 shadow-lg dark:border-night-line dark:bg-night-card"
+              aria-label="Primary"
+            >
+              {primaryNav.map((item) => (
+                <a
+                  href={item.href}
+                  aria-current={item.current ? 'page' : undefined}
+                  class:list={[
+                    'block rounded-lg px-3 py-2.5 text-sm font-semibold',
+                    item.current
+                      ? 'bg-pine/10 text-ink dark:bg-pine/25 dark:text-cream'
+                      : 'text-ink-muted hover:bg-line/40 hover:text-ink dark:text-cream/70 dark:hover:bg-night-line/60 dark:hover:text-cream',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-24 border-t border-line/90 dark:border-night-line">
+      <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+          <div class="max-w-sm">
+            <p class="font-serif text-lg font-semibold tracking-tight">{siteName}</p>
+            <p class="mt-1 text-sm leading-relaxed text-ink-muted dark:text-cream/50">
+              {siteTagline}
+            </p>
+          </div>
+          <nav class="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Footer">
+            <a
+              href="/about"
+              aria-current={onAbout ? 'page' : undefined}
+              class:list={['footer-link', onAbout && 'footer-link-active']}
+            >
+              About
+            </a>
+            <a
+              href="/scoring"
+              aria-current={onScoring ? 'page' : undefined}
+              class:list={['footer-link', onScoring && 'footer-link-active']}
+            >
+              Scoring
+            </a>
+            <a
+              href="/submit"
+              aria-current={onSubmit ? 'page' : undefined}
+              class:list={['footer-link', onSubmit && 'footer-link-active']}
+            >
+              Submit
+            </a>
+            <a
+              href="/contact"
+              aria-current={onContact ? 'page' : undefined}
+              class:list={['footer-link', onContact && 'footer-link-active']}
+            >
+              Contact
+            </a>
+            <a
+              href={twitterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              Twitter/X
+            </a>
+          </nav>
+        </div>
+        <p class="mt-8 text-xs text-ink-muted dark:text-cream/40">
+          Markdown in git · Scout, Quill, Forge
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
