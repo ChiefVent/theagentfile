@@ -1,0 +1,200 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteName } from '../lib/site';
+
+const categories = [
+  'General',
+  'Coding',
+  'Sales',
+  'Research',
+  'Productivity',
+  'Marketing',
+  'Other',
+] as const;
+---
+
+<Layout
+  title={`Submit an Agent | ${siteName}`}
+  description={`Nominate a real autonomous agent for the ${siteName} catalog.`}
+>
+  <section class="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
+    <p class="section-kicker mb-3">Nominate a listing</p>
+    <h1 class="font-serif text-4xl font-semibold tracking-tight sm:text-[2.6rem]">Submit an Agent</h1>
+    <p class="mt-4 text-lg leading-relaxed text-ink-muted dark:text-cream/65">
+      Point us at something that actually runs — not a chatbot demo.
+    </p>
+
+    <div class="accept-callout mt-8">
+      <p class="text-[0.68rem] font-medium uppercase tracking-[0.14em] text-copper dark:text-copper-bright">
+        What we accept
+      </p>
+      <p class="mt-2 text-[0.95rem] leading-relaxed text-ink dark:text-cream/85">
+        {siteName} lists <strong class="font-semibold">real autonomous agents that do work</strong> — tools that
+        run in repos, queues, browsers, or workflows and finish a job without a human at every step.
+      </p>
+      <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-cream/60">
+        Chatbots, prompt packs, and copilots that only suggest text are out of scope. We review submissions
+        by hand; nothing is published automatically.
+      </p>
+    </div>
+
+    <div id="submit-success" class="form-panel mt-10 text-center" hidden>
+      <p class="section-kicker">Received</p>
+      <h2 class="mt-3 font-serif text-2xl font-semibold tracking-tight">Thanks — we got it.</h2>
+      <p class="mx-auto mt-3 max-w-md text-ink-muted dark:text-cream/65">
+        Your nomination is noted. We look for autonomous agents that do real work, not chatbots. If it fits
+        the catalog, we’ll research and write it up.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <button type="button" id="submit-again" class="btn-primary">Submit another</button>
+        <a href="/agents" class="btn-ghost">Browse agents</a>
+      </div>
+    </div>
+
+    <form id="submit-form" class="form-panel mt-10 space-y-6" novalidate>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="form-field">
+          <label class="form-label" for="agent-name">Agent Name</label>
+          <input
+            class="form-control"
+            id="agent-name"
+            name="name"
+            type="text"
+            autocomplete="organization"
+            required
+            maxlength="120"
+            placeholder="e.g. Grok Bot"
+          />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="agent-website">Website</label>
+          <input
+            class="form-control"
+            id="agent-website"
+            name="website"
+            type="url"
+            inputmode="url"
+            autocomplete="url"
+            required
+            placeholder="https://"
+          />
+        </div>
+      </div>
+
+      <fieldset class="form-field">
+        <legend class="form-label">Category</legend>
+        <p class="form-hint -mt-1 mb-2">Pick the closest fit.</p>
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Agent category">
+          {categories.map((cat) => (
+            <label class="chip">
+              <input class="sr-only" type="radio" name="category" value={cat} required />
+              {cat}
+            </label>
+          ))}
+        </div>
+        <p id="category-error" class="mt-2 text-sm text-copper dark:text-copper-bright" hidden>
+          Choose a category.
+        </p>
+      </fieldset>
+
+      <div class="form-field">
+        <label class="form-label" for="agent-description">Short Description</label>
+        <textarea
+          class="form-control min-h-[7.5rem] resize-y"
+          id="agent-description"
+          name="description"
+          required
+          maxlength="400"
+          placeholder="What does it do on its own, and where does it run?"
+        ></textarea>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="agent-notes">
+          Notes
+          <span class="ml-1.5 font-medium normal-case tracking-normal text-ink-muted/80 dark:text-cream/45">
+            optional
+          </span>
+        </label>
+        <textarea
+          class="form-control min-h-[5.5rem] resize-y"
+          id="agent-notes"
+          name="notes"
+          maxlength="800"
+          placeholder="Anything else we should know — how to try it, who built it, or why it belongs here."
+        ></textarea>
+      </div>
+
+      <p id="submit-error" class="text-sm text-copper dark:text-copper-bright" hidden>
+        Fill in the required fields so we can review this agent.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 pt-1">
+        <button type="submit" class="btn-primary">Submit an agent</button>
+        <p class="text-sm text-ink-muted dark:text-cream/50">No account required. Nothing is sent to a server.</p>
+      </div>
+    </form>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('submit-form');
+    var success = document.getElementById('submit-success');
+    var again = document.getElementById('submit-again');
+    var error = document.getElementById('submit-error');
+    var categoryError = document.getElementById('category-error');
+
+    function showForm() {
+      if (form) form.hidden = false;
+      if (success) success.hidden = true;
+      if (error) error.hidden = true;
+      if (categoryError) categoryError.hidden = true;
+    }
+
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var name = form.querySelector('#agent-name');
+        var website = form.querySelector('#agent-website');
+        var description = form.querySelector('#agent-description');
+        var category = form.querySelector('input[name="category"]:checked');
+        var valid =
+          name &&
+          name.value.trim() &&
+          website &&
+          website.value.trim() &&
+          website.checkValidity() &&
+          description &&
+          description.value.trim() &&
+          category;
+
+        if (categoryError) categoryError.hidden = !!category;
+        if (!valid) {
+          if (error) error.hidden = false;
+          if (name && !name.value.trim()) name.focus();
+          else if (website && (!website.value.trim() || !website.checkValidity())) website.focus();
+          else if (!category && form.querySelector('input[name="category"]')) {
+            form.querySelector('input[name="category"]').focus();
+          } else if (description) description.focus();
+          return;
+        }
+
+        if (error) error.hidden = true;
+        if (categoryError) categoryError.hidden = true;
+        form.hidden = true;
+        if (success) success.hidden = false;
+        if (success) success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    if (again) {
+      again.addEventListener('click', function () {
+        if (form) form.reset();
+        showForm();
+        var name = document.getElementById('agent-name');
+        if (name) name.focus();
+      });
+    }
+  })();
+</script>
