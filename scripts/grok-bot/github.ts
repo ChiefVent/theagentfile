@@ -90,7 +90,7 @@ export async function openGithubPullRequest(options: {
 	}
 
 	const branch = `content/${options.slug}-${Date.now().toString(36)}`;
-	const filePath = options.path.replace(/^\.\/?/, '').replace(/^\.\//, '');
+	const filePath = options.path.replace(/^\.\/?/, '');
 
 	const ref = await githubJson(
 		config,
