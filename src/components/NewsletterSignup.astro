@@ -1,0 +1,75 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<section data-newsletter class:list={['newsletter-panel', className]}>
+	<p class="section-kicker">Newsletter</p>
+	<h2 class="mt-2 font-serif text-2xl font-semibold tracking-tight sm:text-[1.85rem]">
+		New agents from Agent File, occasionally
+	</h2>
+	<p class="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted sm:text-[0.95rem] dark:text-cream/60">
+		A short note from Agent File when we file a scored agent. No ads, and we don’t sell your email.
+	</p>
+
+	<form data-newsletter-form class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
+		<label class="form-field min-w-0 flex-1">
+			<span class="form-label">Email</span>
+			<input
+				class="form-control"
+				type="email"
+				name="email"
+				required
+				autocomplete="email"
+				placeholder="you@example.com"
+			/>
+		</label>
+		<button type="submit" class="btn-primary shrink-0 sm:min-w-[9.5rem]">Subscribe</button>
+	</form>
+
+	<p
+		data-newsletter-success
+		class="mt-5 text-sm leading-relaxed text-pine dark:text-pine-bright"
+		hidden
+		role="status"
+	>
+		You’re on the list. We’ll only write when a new agent is filed.
+	</p>
+</section>
+
+<script>
+	const KEY = 'agenthub-newsletter';
+
+	function bind(root: Element) {
+		const form = root.querySelector<HTMLFormElement>('[data-newsletter-form]');
+		const success = root.querySelector<HTMLElement>('[data-newsletter-success]');
+		if (!form || !success) return;
+
+		const showSuccess = () => {
+			form.hidden = true;
+			success.hidden = false;
+		};
+
+		try {
+			if (sessionStorage.getItem(KEY) === '1') showSuccess();
+		} catch {
+			/* private mode */
+		}
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+			try {
+				sessionStorage.setItem(KEY, '1');
+			} catch {
+				/* private mode */
+			}
+			showSuccess();
+		});
+	}
+
+	document.querySelectorAll('[data-newsletter]').forEach(bind);
+</script>

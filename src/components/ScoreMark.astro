@@ -1,0 +1,24 @@
+---
+interface Props {
+	score: number;
+	size?: 'sm' | 'md' | 'lg';
+}
+
+const { score, size = 'md' } = Astro.props;
+const label = score.toFixed(1);
+---
+
+<span
+	class:list={[
+		'score-mark inline-flex shrink-0 items-baseline justify-center gap-0.5 tabular-nums leading-none',
+		size === 'sm' && 'px-2 py-1 text-sm',
+		size === 'md' && 'px-2.5 py-1.5 text-[0.95rem]',
+		size === 'lg' && 'px-3 py-1.5 text-lg',
+	]}
+	title={`Catalog score ${label} out of 10`}
+>
+	<span class="font-serif font-semibold tracking-tight text-copper dark:text-copper-bright">
+		{label}
+	</span>
+	<span class="text-[0.62em] font-medium tracking-tight text-ink-muted dark:text-cream/45">/10</span>
+</span>
