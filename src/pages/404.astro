@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteName } from '../lib/site';
+---
+
+<Layout title={`Not found | ${siteName}`} description={`This page is not in the ${siteName} catalog.`}>
+  <section class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
+    <p class="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-copper dark:text-copper-bright">404</p>
+    <h1 class="font-serif text-4xl font-semibold tracking-tight">Page not found</h1>
+    <p class="mx-auto mt-4 max-w-md text-lg text-ink-muted dark:text-cream/65">
+      That URL is not an agent in this catalog. It may have been renamed, or the slug is wrong.
+    </p>
+    <div class="mt-10 flex justify-center gap-6 text-sm">
+      <a href="/agents" class="btn-primary">All agents</a>
+      <a href="/" class="btn-ghost">Home</a>
+    </div>
+  </section>
+</Layout>

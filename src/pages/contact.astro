@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteName, twitterUrl } from '../lib/site';
+---
+
+<Layout
+	title={`Contact | ${siteName}`}
+	description={`Suggest an agent, request a review, or ask about featured listings on ${siteName}.`}
+>
+	<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+		<p class="section-kicker">Contact</p>
+		<h1 class="mt-2 font-serif text-4xl font-semibold tracking-tight sm:text-[2.6rem]">
+			Contact
+		</h1>
+		<div class="prose prose-lg prose-agenthub mt-8 dark:prose-invert max-w-none">
+			<p>Want to suggest an agent, request a review, or ask about featured listings?</p>
+			<p>
+				Use the <a href="/submit">Submit Agent</a> page or reach out via
+				<a href={twitterUrl} target="_blank" rel="noopener noreferrer">X</a>.
+			</p>
+		</div>
+		<p class="mt-10 flex flex-wrap items-center gap-4">
+			<a href="/submit" class="btn-primary">Submit Agent <span aria-hidden="true">→</span></a>
+			<a href={twitterUrl} class="btn-ghost" target="_blank" rel="noopener noreferrer">
+				Reach out on X
+			</a>
+		</p>
+	</section>
+</Layout>

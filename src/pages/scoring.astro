@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteName } from '../lib/site';
+---
+
+<Layout
+	title={`Scoring | ${siteName}`}
+	description={`Each ${siteName} listing is scored out of 10 for real autonomy, reliability, usefulness, pricing value, and current limitations.`}
+>
+	<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+		<p class="section-kicker">Scoring</p>
+		<h1 class="mt-2 font-serif text-4xl font-semibold tracking-tight sm:text-[2.6rem]">
+			How we score agents
+		</h1>
+		<div class="prose prose-lg prose-agenthub mt-8 dark:prose-invert max-w-none">
+			<p>Each agent is scored out of 10 based on:</p>
+			<ul>
+				<li>Real autonomy (can it do work without constant prompting?)</li>
+				<li>Reliability</li>
+				<li>Usefulness for practical tasks</li>
+				<li>Pricing value</li>
+				<li>Current limitations</li>
+			</ul>
+			<p>
+				A high score does not mean perfect. It means the product is meaningfully capable today.
+			</p>
+			<p>We update scores as products change.</p>
+		</div>
+		<p class="mt-10 flex flex-wrap items-center gap-4">
+			<a href="/agents" class="btn-primary">Browse scored agents <span aria-hidden="true">→</span></a>
+			<a href="/about" class="btn-ghost">About {siteName}</a>
+		</p>
+	</section>
+</Layout>

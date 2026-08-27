@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteName } from '../lib/site';
+---
+
+<Layout
+	title={`About | ${siteName}`}
+	description={`${siteName} is a curated file of real AI agents — tools that can actually take action, use software, and complete work, not just chat.`}
+>
+	<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+		<p class="section-kicker">About</p>
+		<h1 class="mt-2 font-serif text-4xl font-semibold tracking-tight sm:text-[2.6rem]">
+			About {siteName}
+		</h1>
+		<div class="prose prose-lg prose-agenthub mt-8 dark:prose-invert max-w-none">
+			<p>
+				{siteName} is a curated file of real AI agents — tools that can actually take action, use
+				software, and complete work, not just chat.
+			</p>
+			<p>
+				We focus on autonomous agents with computer use, tool access, scheduling, memory, or
+				multi-step execution. Each listing is reviewed for what the product actually does, who it’s
+				for, and where it falls short.
+			</p>
+			<p>Our goal is simple: help people quickly find agents that can do real work.</p>
+		</div>
+		<p class="mt-10 flex flex-wrap items-center gap-4">
+			<a href="/agents" class="btn-primary">Browse all agents <span aria-hidden="true">→</span></a>
+			<a href="/scoring" class="btn-ghost">How we score</a>
+		</p>
+	</section>
+</Layout>
