@@ -1,0 +1,32 @@
+{
+  "name": "agenthub",
+  "description": "Agent File — The file of agents that actually work",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4327",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "npm run build && npx wrangler deploy",
+    "astro": "astro",
+    "content:scout": "node --experimental-strip-types --no-warnings scripts/grok-bot/scout.ts",
+    "content:quill": "node --experimental-strip-types --no-warnings scripts/grok-bot/quill.ts",
+    "content:forge": "node --experimental-strip-types --no-warnings scripts/grok-bot/forge.ts",
+    "content:generate": "node --experimental-strip-types --no-warnings scripts/grok-bot/generate.ts",
+    "content:validate": "node --experimental-strip-types --no-warnings scripts/grok-bot/validate.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.7",
+    "tailwindcss": "^4.3.3"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20"
+  }
+}
