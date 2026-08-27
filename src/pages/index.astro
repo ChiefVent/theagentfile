@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import AgentCard from '../components/AgentCard.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { agentSlug } from '../lib/slug';
+import { siteName, siteTagline } from '../lib/site';
+
+const agents = await getCollection('agents');
+const featured = agents
+  .filter(a => a.data.featured)
+  .sort((a, b) => b.data.score - a.data.score)
+  .slice(0, 12);
+
+const latest = agents
+  .sort((a, b) => {
+    const byDate = b.data.date.valueOf() - a.data.date.valueOf();
+    if (byDate !== 0) return byDate;
+    return b.data.score - a.data.score;
+  })
+  .slice(0, 32);
+
+const categories = new Set(agents.map((a) => a.data.category)).size;
+---
+
+<Layout title={`${siteName} — ${siteTagline}`}>
+  <!-- Hero -->
+  <section class="mx-auto max-w-5xl px-4 pb-16 pt-16 text-center sm:px-6 sm:pb-20 sm:pt-24 lg:pt-28">
+    <div class="mb-7 flex items-center justify-center gap-3">
+      <span class="hidden h-px w-10 bg-copper/40 sm:block dark:bg-copper-bright/45" aria-hidden="true"></span>
+      <p class="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-copper dark:text-copper-bright">
+        A working catalog, not a chatbot roundup
+      </p>
+      <span class="hidden h-px w-10 bg-copper/40 sm:block dark:bg-copper-bright/45" aria-hidden="true"></span>
+    </div>
+    <h1 class="mx-auto max-w-3xl font-serif text-[2.35rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-5xl sm:leading-[1.06] lg:text-[3.65rem] lg:leading-[1.05] dark:text-cream">
+      The file of agents
+      <span class="mt-1 block font-normal italic text-copper dark:text-copper-bright">that actually work</span>
+    </h1>
+    <p class="mx-auto mt-7 max-w-[40rem] text-[1.05rem] leading-[1.7] text-ink-muted sm:mt-8 sm:text-lg sm:leading-[1.75] dark:text-cream/68">
+      Independent write-ups of autonomous AI tools that run in repos, queues, and browsers — scored, categorized, and kept in Git.
+    </p>
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:mt-11 sm:flex-row sm:gap-8">
+      <a href="/agents" class="btn-primary btn-hero">
+        Browse all agents
+        <span aria-hidden="true">→</span>
+      </a>
+      <a href="/agents/grok-bot" class="btn-ghost">
+        How pages get written
+      </a>
+    </div>
+    <dl class="hero-stats mx-auto mt-14 grid max-w-xl grid-cols-3 text-center sm:mt-16">
+      <div>
+        <dt class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-ink-muted dark:text-cream/45">Listed</dt>
+        <dd class="mt-1.5 font-serif text-2xl font-semibold tabular-nums sm:text-3xl">{agents.length}</dd>
+      </div>
+      <div>
+        <dt class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-ink-muted dark:text-cream/45">Categories</dt>
+        <dd class="mt-1.5 font-serif text-2xl font-semibold tabular-nums sm:text-3xl">{categories}</dd>
+      </div>
+      <div>
+        <dt class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-ink-muted dark:text-cream/45">Pipeline</dt>
+        <dd class="mt-1.5 font-serif text-lg font-semibold leading-7 sm:text-2xl sm:leading-9">S · Q · F</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- Featured -->
+  {featured.length > 0 && (
+    <section class="home-band">
+      <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+        <div class="mb-10 flex flex-col gap-3 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="section-kicker">Highest scores</p>
+            <h2 class="mt-2 font-serif text-3xl font-semibold tracking-tight sm:text-[2.05rem]">Featured Agents</h2>
+          </div>
+          <p class="max-w-xs text-sm leading-relaxed text-ink-muted sm:text-right dark:text-cream/50">
+            Highest scores, still in the catalog
+          </p>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
+          {featured.map(agent => (
+            <AgentCard
+              href={`/agents/${agentSlug(agent)}`}
+              title={agent.data.title}
+              description={agent.data.description}
+              category={agent.data.category}
+              score={agent.data.score}
+              pricing={agent.data.pricing}
+              variant="list"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Latest -->
+  <section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+    <div class="mb-10 flex flex-col gap-3 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="section-kicker">Just filed</p>
+        <h2 class="mt-2 font-serif text-3xl font-semibold tracking-tight sm:text-[2.05rem]">Latest Agents</h2>
+      </div>
+      <a href="/agents" class="btn-ghost text-sm">
+        View all →
+      </a>
+    </div>
+    {latest.length === 0 ? (
+      <p class="text-ink-muted dark:text-cream/55">
+        No agents in the file yet.
+      </p>
+    ) : (
+      <div class="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
+        {latest.map(agent => (
+          <AgentCard
+            href={`/agents/${agentSlug(agent)}`}
+            title={agent.data.title}
+            description={agent.data.description}
+            category={agent.data.category}
+            score={agent.data.score}
+            pricing={agent.data.pricing}
+            variant="list"
+          />
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 pb-4 sm:px-6">
+    <NewsletterSignup />
+  </section>
+</Layout>
