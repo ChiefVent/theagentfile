@@ -1,5 +1,5 @@
 {
-  "name": "agenthub",
+  "name": "theagentfile",
   "compatibility_date": "2026-08-25",
   // Static Astro site. Workers static assets (not Pages Functions).
   // Dashboard / Git CI can still use: build `npm run build`, output `dist`.
