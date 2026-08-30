@@ -6,6 +6,7 @@ score: 8.1
 pricing: "Enterprise contracts; typically high annual minimums"
 website: "https://sierra.ai"
 date: 2026-08-26
+featured: true
 ---
 
 # Sierra

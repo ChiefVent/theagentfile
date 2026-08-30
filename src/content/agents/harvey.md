@@ -6,6 +6,7 @@ score: 8.3
 pricing: "Enterprise only"
 website: "https://www.harvey.ai"
 date: 2026-08-26
+featured: true
 ---
 
 # Harvey

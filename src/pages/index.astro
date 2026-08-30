@@ -24,7 +24,6 @@ const categories = new Set(agents.map((a) => a.data.category)).size;
 ---
 
 <Layout title={`${siteName} — ${siteTagline}`}>
-  <!-- Hero -->
   <section class="mx-auto max-w-5xl px-4 pb-16 pt-16 text-center sm:px-6 sm:pb-20 sm:pt-24 lg:pt-28">
     <div class="mb-7 flex items-center justify-center gap-3">
       <span class="hidden h-px w-10 bg-copper/40 sm:block dark:bg-copper-bright/45" aria-hidden="true"></span>
@@ -45,8 +44,8 @@ const categories = new Set(agents.map((a) => a.data.category)).size;
         Browse all agents
         <span aria-hidden="true">→</span>
       </a>
-      <a href="/agents/grok-bot" class="btn-ghost">
-        How pages get written
+      <a href="/scoring" class="btn-ghost">
+        How we score
       </a>
     </div>
     <dl class="hero-stats mx-auto mt-14 grid max-w-xl grid-cols-3 text-center sm:mt-16">
@@ -59,13 +58,12 @@ const categories = new Set(agents.map((a) => a.data.category)).size;
         <dd class="mt-1.5 font-serif text-2xl font-semibold tabular-nums sm:text-3xl">{categories}</dd>
       </div>
       <div>
-        <dt class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-ink-muted dark:text-cream/45">Pipeline</dt>
-        <dd class="mt-1.5 font-serif text-lg font-semibold leading-7 sm:text-2xl sm:leading-9">S · Q · F</dd>
+        <dt class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-ink-muted dark:text-cream/45">Highest</dt>
+        <dd class="mt-1.5 font-serif text-lg font-semibold leading-7 sm:text-2xl sm:leading-9">8.8</dd>
       </div>
     </dl>
   </section>
 
-  <!-- Featured -->
   {featured.length > 0 && (
     <section class="home-band">
       <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
@@ -75,7 +73,7 @@ const categories = new Set(agents.map((a) => a.data.category)).size;
             <h2 class="mt-2 font-serif text-3xl font-semibold tracking-tight sm:text-[2.05rem]">Featured Agents</h2>
           </div>
           <p class="max-w-xs text-sm leading-relaxed text-ink-muted sm:text-right dark:text-cream/50">
-            Highest scores, still in the catalog
+            Highest scores we would still defend
           </p>
         </div>
         <div class="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
@@ -95,7 +93,6 @@ const categories = new Set(agents.map((a) => a.data.category)).size;
     </section>
   )}
 
-  <!-- Latest -->
   <section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
     <div class="mb-10 flex flex-col gap-3 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
       <div>

@@ -6,6 +6,7 @@ score: 8.1
 pricing: "Paid plans starting from mid-tier pricing"
 website: "https://www.lindy.ai"
 date: 2026-08-26
+featured: true
 ---
 
 # Lindy

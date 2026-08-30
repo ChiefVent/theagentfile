@@ -2,40 +2,46 @@
 title: Cursor Cloud Agents
 description: Remote agents that boot a VM, check out a repo, and work against a branch without occupying a local editor session.
 category: Coding
-score: 9.0
-pricing: Usage-based
+score: 8.1
+pricing: Usage-based on Cursor plans
 website: https://cursor.com/agents
-date: 2026-08-24
+date: 2026-08-30
 featured: true
 ---
 
-Cursor Cloud Agents are background coding agents. They boot a remote environment, check out the repo, and work through a task the way a teammate would: inspect the tree, edit files, run the build, and commit. They are not a chat sidebar. They are a checkout with a job.
+# Cursor Cloud Agents
 
-On Agent File they own **Phase B** of the content pipeline. Grok Bot (Scout → Quill → Forge) writes Markdown into this tree. A Cloud Agent is what turns those files into a published site (commit, push, Cloudflare Pages).
+**Best everyday editor-plus-delegation loop. The background agent is class-of-Devin, not class-of-Claude-Code.**
 
-## What they do here
+## What it actually does
+Cursor Cloud Agents are background coding agents. They boot a remote environment, check out the repo, and work through a task the way a teammate would: inspect the tree, edit files, run the build, and commit. They are a checkout with a job, not only a chat sidebar.
 
-When new files appear under `src/content/agents/`:
+On Agent File they can own the git/release step after Scout → Quill → Forge writes Markdown: validate, commit on `main`, push, rebuild. That is how *this repo* uses them. It is not extra points.
 
-1. Run `npm run content:validate` so frontmatter matches the collection schema.
-2. Stage only agent Markdown with `scripts/commit-content.sh` (add `--commit` to also create the git commit).
-3. Commit on `main` with a message that names the new slugs.
-4. `git push origin main`.
-5. Run `npm run build`. If Cloudflare Pages is connected, it deploys `dist/` from the push to `main` (see `docs/cloudflare-pages.md`). This repo does not store hosting credentials.
+## Key Features
+- Remote VM per task, repo checkout, branch work
+- Runs the build and opens a PR or commit
+- Lives next to the Cursor editor you already use
+- Usage-priced on existing Cursor plans
 
-## How they differ from Scout, Quill, and Forge
+## Pricing
+Usage-based on Cursor Hobby / Pro / Pro+ / Ultra / Teams. Confirm current credit rules on cursor.com — they move.
 
-| Role | Who | Writes |
-| --- | --- | --- |
-| Research / outline | Grok Bot Scout | JSON outline |
-| Article draft | Grok Bot Quill | `.cache/grok-bot/drafts/<slug>.md` |
-| Catalog file | Grok Bot Forge | `src/content/agents/<slug>.md` |
-| Git and release | Cursor Cloud Agent | commit on `main`, push Origin, `dist/` |
+## Strengths
+- Lowest-friction delegation if the team already lives in Cursor
+- Real repo context, not a paste box
+- Tied with Devin-class cloud agents on scoped tickets
 
-Forge can open a GitHub PR only when `GITHUB_TOKEN` and `GITHUB_REPO` are set and `--github` is passed. Otherwise it skips that step. Cloud Agents can also finish site structure if a previous pass left `src/content/agents/` or `src/pages/agents/[slug].astro` incomplete. They should complete the tree, not fight a half-written one.
+## Limitations
+- Not the deepest programmable harness (Claude Code still leads there)
+- Cloud agents cannot see unsaved local buffers
+- Quota and model routing can surprise you on large jobs
 
-## Limits
+## Best for
+Teams already in Cursor who want a ticket to leave the editor and come back as a diff.
 
-Cloud Agents cannot see your unsaved local buffers. Anything they need must be in git, secrets, or the prompt. Network egress follows the environment policy, so package registries and APIs that are not allowed will fail.
+## Skip if
+You want a terminal-native agent you can script with hooks, or you do not already pay for Cursor.
 
-Start a run from [cursor.com/agents](https://cursor.com/agents) or from the Cloud Agents panel in the editor.
+## Final Verdict
+Keep it featured. Drop the 9. **Score: 8.1/10**
